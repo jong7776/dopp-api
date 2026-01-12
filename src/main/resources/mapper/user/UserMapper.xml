@@ -14,17 +14,20 @@
         SELECT user_id, login_id, nickname, role, is_active
         FROM user_info
         WHERE 1=1
-        <if test="loginId != null and loginId != ''">
-            AND login_id = #{loginId}
-        </if>
-        <if test="nickname != null and nickname != ''">
-            AND nickname = #{nickname}
-        </if>
-        <if test="role != null and role != ''">
-            AND role = #{role}
-        </if>
-        <if test="isActive != null">
-            AND is_active = #{isActive}
-        </if>
+            <if test="userId != null and userId != 0">
+                AND user_id = #{userId}
+            </if>
+            <if test="loginId != null and loginId != ''">
+                AND login_id = #{loginId}
+            </if>
+            <if test="nickname != null and nickname != ''">
+                AND nickname = #{nickname}
+            </if>
+            <if test="role != null and role != ''">
+                AND role = #{role}
+            </if>
+            <if test="isActive != null">
+                AND is_active = #{isActive}
+            </if>
     </select>
 </mapper>

@@ -3,7 +3,10 @@ package com.dopp.doppapi.controller.user;
 import com.dopp.doppapi.common.response.ApiResult;
 import com.dopp.doppapi.dto.user.UserDto;
 import com.dopp.doppapi.service.user.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,14 +15,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final ObjectMapper objectMapper;
 
     @GetMapping("/info")
     public ResponseEntity<ApiResult<UserDto>> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
@@ -31,4 +39,18 @@ public class UserController {
         return ResponseEntity.ok(ApiResult.success(userService.getUserList(request)));
     }
 
+    @PostMapping("/excel/download")
+    public void downloadUserListExcel(UserDto request, HttpServletResponse response) throws IOException {
+        List<UserDto> userList = userService.getUserList(request);
+
+        // 엑셀 헤더 설정 (LinkedHashMap으로 순서 보장)
+        Map<String, String> headerMap = new LinkedHashMap<>();
+        headerMap.put("userId", "사용자 ID");
+        headerMap.put("loginId", "로그인 ID");
+        headerMap.put("nickname", "닉네임");
+        headerMap.put("role", "권한");
+        headerMap.put("isActive", "활성 여부");
+        throw new IOException();
+        //ExcelUtil.downloadExcel(response, userList, headerMap, "사용자_목록", "사용자 목록");
+    }
 }

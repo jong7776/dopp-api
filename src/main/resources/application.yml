@@ -17,10 +17,13 @@ mybatis:
 
 logging:
   level:
-    org.mybatis: DEBUG
-    org.mybatis.mapper: DEBUG   # Mapper SQL 로그
+    root: INFO                    # 전체 기본 로그 INFO 이상만 출력
+    org.mybatis: WARN               # MyBatis 관련 로그 최소화
+    org.springframework.jdbc: WARN  # JDBC 관련 디버그 로그 최소화
+    org.mybatis.mapper: DEBUG       # Mapper SQL 로그
     org.postgresql: DEBUG
-    com.dopp.doppapi.mapper: DEBUG # Mapper 인터페이스 패키지 경로
+    com.dopp.doppapi.mapper: DEBUG  # Mapper 인터페이스 패키지 경로
+    com.zaxxer.hikari: WARN         # HikariCP 풀 관련 디버그 최소화
 
 jwt:
   secret: mySuperSecretKey12345mySuperSecretKey12345

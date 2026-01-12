@@ -62,7 +62,7 @@ public class AuthController {
         Map<String, String> tokens = new HashMap<>();
         tokens.put("accessToken", accessToken);
 
-        log.info("accessToken={}", accessToken);
+        log.info("======> accessToken={}", accessToken);
 
         return ResponseEntity.ok(ApiResult.success(tokens));
     }
@@ -95,6 +95,8 @@ public class AuthController {
 
         Map<String, String> tokens = new HashMap<>();
         tokens.put("accessToken", newAccessToken);
+
+        log.info("======> accessToken={}", newAccessToken);
 
         return ResponseEntity.ok(ApiResult.success(tokens));
     }
