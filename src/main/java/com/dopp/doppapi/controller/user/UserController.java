@@ -1,7 +1,7 @@
 package com.dopp.doppapi.controller.user;
 
 import com.dopp.doppapi.common.response.ApiResult;
-import com.dopp.doppapi.dto.user.UserDto;
+import com.dopp.doppapi.dto.auth.UserDto;
 import com.dopp.doppapi.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

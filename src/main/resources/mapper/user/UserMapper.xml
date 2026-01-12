@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dopp.doppapi.mapper.user.UserMapper">
-    <select id="selectUserByLoginId" resultType="com.dopp.doppapi.dto.user.UserDto">
+    <select id="selectUserByLoginId" resultType="com.dopp.doppapi.dto.auth.UserDto">
         SELECT user_id, login_id, nickname, role, is_active, password
         FROM user_info
         WHERE login_id = #{loginId}

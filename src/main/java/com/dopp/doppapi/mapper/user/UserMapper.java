@@ -1,6 +1,6 @@
 package com.dopp.doppapi.mapper.user;
 
-import com.dopp.doppapi.dto.user.UserDto;
+import com.dopp.doppapi.dto.auth.UserDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

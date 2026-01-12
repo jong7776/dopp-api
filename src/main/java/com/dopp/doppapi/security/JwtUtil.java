@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -13,9 +14,14 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String secret = "mySuperSecretKey12345mySuperSecretKey12345";
-    private final long accessTokenValidity = 15 * 60 * 1000; // 15분
-    private final long refreshTokenValidity = 7 * 24 * 60 * 60 * 1000; // 7일
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.access-token-validity}")
+    private long accessTokenValidity;
+
+    @Value("${jwt.refresh-token-validity}")
+    private long refreshTokenValidity;
 
     private Key getSigningKey() {
         byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);

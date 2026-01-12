@@ -12,3 +12,8 @@ spring:
 mybatis:
   mapper-locations: classpath*:mapper/**/*.xml
   type-aliases-package: com.dopp.doppapi.dto
+
+jwt:
+  secret: mySuperSecretKey12345mySuperSecretKey12345
+  access-token-validity: 900000 # 15 * 60 * 1000; // 15분
+  refresh-token-validity: 86400000 # 1 * 24 * 60 * 60 * 1000; // 1일
