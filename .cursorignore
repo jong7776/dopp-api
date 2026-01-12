@@ -1,0 +1,52 @@
+# Build outputs
+/target/
+/build/
+/out/
+
+# Gradle
+.gradle/
+**/.gradle/
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+*.log
+logs/
+
+# Runtime files
+*.pid
+*.pid.lock
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test & coverage
+/coverage/
+/jacoco/
+/build/reports/
+
+# Node (프론트 같이 있을 경우)
+node_modules/
+dist/
+
+# Temporary files
+tmp/
+temp/
+
+# Environment & secrets
+.env
+.env.*
+application-*.yml
+application-*.properties
+
+# Generated files
+**/generated/

@@ -1,0 +1,14 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: dopp-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/doppdb
+    username: dopp_master
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.dopp.doppapi.dto
