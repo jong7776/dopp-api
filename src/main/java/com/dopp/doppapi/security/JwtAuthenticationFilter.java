@@ -1,15 +1,11 @@
 package com.dopp.doppapi.security;
 
-import com.dopp.doppapi.common.response.ApiResult;
-import com.dopp.doppapi.common.response.ApiResultCode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,20 +48,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.debug("Security Context에 '{}' 인증 정보를 저장했습니다", loginId);
-        } else {
-            // 토큰이 유효하지 않은 경우
-            sendErrorResponse(response, ApiResultCode.INVALID_TOKEN);
-            return; // 필터 체인 중단
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getRequestURI();
-        // /api/auth/ 로 시작하는 경로는 필터링 제외 (로그인, 리프레시 토큰 등)
-        return path.startsWith("/api/auth/");
     }
 
     private String resolveToken(HttpServletRequest request) {
@@ -74,17 +59,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return bearerToken.substring(BEARER_PREFIX.length());
         }
         return null;
-    }
-
-    private void sendErrorResponse(HttpServletResponse response, ApiResultCode resultCode) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setCharacterEncoding("UTF-8");
-
-        ApiResult<Void> apiResult = ApiResult.fail(resultCode);
-        String jsonResponse = objectMapper.writeValueAsString(apiResult);
-
-        response.getWriter().write(jsonResponse);
     }
 }

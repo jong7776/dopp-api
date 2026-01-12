@@ -1,4 +1,4 @@
-package com.dopp.doppapi.dto.auth;
+package com.dopp.doppapi.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

@@ -4,7 +4,7 @@ import com.dopp.doppapi.common.response.ApiResult;
 import com.dopp.doppapi.common.response.ApiResultCode;
 import com.dopp.doppapi.dto.auth.LoginRequest;
 import com.dopp.doppapi.dto.auth.RefreshTokenDto;
-import com.dopp.doppapi.dto.auth.UserDto;
+import com.dopp.doppapi.dto.user.UserDto;
 import com.dopp.doppapi.security.JwtUtil;
 import com.dopp.doppapi.service.auth.RefreshTokenService;
 import com.dopp.doppapi.service.user.UserService;
@@ -38,7 +38,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<ApiResult<Map<String, String>>> login(@RequestBody LoginRequest request, HttpServletRequest httpRequest, HttpServletResponse response) {
 
-        UserDto user = userService.getUserByLoginId(request.getLoginId());
+        UserDto user = userService.getUserInfo(request.getLoginId());
         if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return ResponseEntity.status(401).body(ApiResult.fail(ApiResultCode.INVALID_PW));
         }

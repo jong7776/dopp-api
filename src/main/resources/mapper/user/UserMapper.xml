@@ -3,9 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dopp.doppapi.mapper.user.UserMapper">
-    <select id="selectUserByLoginId" resultType="com.dopp.doppapi.dto.auth.UserDto">
+    <select id="selectUserInfoByLoginId" resultType="com.dopp.doppapi.dto.user.UserDto">
         SELECT user_id, login_id, nickname, role, is_active, password
         FROM user_info
         WHERE login_id = #{loginId}
+    </select>
+
+
+    <select id="selectUserList" resultType="com.dopp.doppapi.dto.user.UserDto">
+        SELECT user_id, login_id, nickname, role, is_active
+        FROM user_info
+        WHERE 1=1
+        <if test="loginId != null and loginId != ''">
+            AND login_id = #{loginId}
+        </if>
+        <if test="nickname != null and nickname != ''">
+            AND nickname = #{nickname}
+        </if>
+        <if test="role != null and role != ''">
+            AND role = #{role}
+        </if>
+        <if test="isActive != null">
+            AND is_active = #{isActive}
+        </if>
     </select>
 </mapper>
