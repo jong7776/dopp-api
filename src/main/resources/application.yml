@@ -12,6 +12,15 @@ spring:
 mybatis:
   mapper-locations: classpath*:mapper/**/*.xml
   type-aliases-package: com.dopp.doppapi.dto
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+logging:
+  level:
+    org.mybatis: DEBUG
+    org.mybatis.mapper: DEBUG   # Mapper SQL 로그
+    org.postgresql: DEBUG
+    com.dopp.doppapi.mapper: DEBUG # Mapper 인터페이스 패키지 경로
 
 jwt:
   secret: mySuperSecretKey12345mySuperSecretKey12345
