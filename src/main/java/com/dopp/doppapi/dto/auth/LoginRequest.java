@@ -1,4 +1,4 @@
-package com.dopp.doppapi.dto.user;
+package com.dopp.doppapi.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

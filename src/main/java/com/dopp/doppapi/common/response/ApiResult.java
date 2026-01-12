@@ -18,6 +18,9 @@ public class ApiResult<T> {
     @Schema(name = "API 요청 결과 메시지")
     private String message;
 
+    @Schema(name = "API 요청 결과 화면메시지")
+    private String frontMessage;
+
     @Schema(name = "API 요청 결과 데이터")
     private T data;
 
@@ -25,6 +28,7 @@ public class ApiResult<T> {
         return ApiResult.<T>builder()
                 .code(ApiResultCode.SUCCESS.getCode())
                 .message(ApiResultCode.SUCCESS.getMessage())
+                .frontMessage(ApiResultCode.SUCCESS.getFrontMessage())
                 .data(data)
                 .build();
     }
@@ -33,6 +37,7 @@ public class ApiResult<T> {
         return ApiResult.<T>builder()
                 .code(resultCode.getCode())
                 .message(resultCode.getMessage())
+                .frontMessage(resultCode.getFrontMessage())
                 .data(null)
                 .build();
     }
