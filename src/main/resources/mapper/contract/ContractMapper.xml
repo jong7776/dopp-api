@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dopp.doppapi.mapper.contract.ContractMapper">
+    <select id="selectContractList"
+        parameterType="com.dopp.doppapi.dto.contract.ContractListRequest"
+        resultType="com.dopp.doppapi.dto.contract.ContractDto"
+    >
+        SELECT
+            contract_id,
+            "type",
+            "year",
+            contract_name,
+            company_name,
+            contract_start,
+            contract_end,
+            invoice_rule,
+            payment_term,
+            total_amount,
+            m01, m02, m03, m04, m05, m06,
+            m07, m08, m09, m10, m11, m12,
+            created_at,
+            updated_at,
+            created_by,
+            updated_by
+        FROM contract_info
+        WHERE 1=1
+        <if test="year != null">
+            AND "year" = #{year}
+        </if>
+        <if test="type != null and type != ''">
+            AND "type" = #{type}
+        </if>
+        ORDER BY "type" , contract_start, contract_end, contract_id
+    </select>
+</mapper>
