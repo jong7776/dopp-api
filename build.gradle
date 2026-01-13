@@ -25,9 +25,9 @@ repositories {
 }
 
 dependencies {
-    // Spring Boot Web
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    // Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // MyBatis (db)
@@ -44,7 +44,7 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     // POI
-    implementation 'org.apache.poi:poi-ooxml:5.2.3'
+    implementation 'org.apache.poi:poi-ooxml:5.4.1'
 
     // swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'

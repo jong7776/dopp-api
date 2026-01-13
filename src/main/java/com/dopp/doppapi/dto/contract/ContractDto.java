@@ -1,5 +1,6 @@
 package com.dopp.doppapi.dto.contract;
 
+import com.dopp.doppapi.dto.common.MonthlyAmountDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ContractDto {
+public class ContractDto implements MonthlyAmountDto {
     private Long contractId;
     private String type;
     private Integer year;

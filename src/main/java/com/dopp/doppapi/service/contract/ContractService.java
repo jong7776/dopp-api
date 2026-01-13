@@ -1,5 +1,6 @@
 package com.dopp.doppapi.service.contract;
 
+import com.dopp.doppapi.common.utils.CalculationUtil;
 import com.dopp.doppapi.dto.contract.ContractDto;
 import com.dopp.doppapi.dto.contract.ContractListRequest;
 import com.dopp.doppapi.dto.contract.ContractListResponse;
@@ -28,5 +29,14 @@ public class ContractService {
         List<ContractDto> purchase = groupedByType.getOrDefault("P", new ArrayList<>());
 
         return new ContractListResponse(sales, purchase);
+    }
+
+    public ContractListResponse downloadExcelContractList(ContractListRequest request) {
+        ContractListResponse list = getContractList(request);
+        // 합계 계산 및 추가
+        CalculationUtil.addTotalRow(list.getSales(), ContractDto::new, dto -> dto.setContractName("합계"));
+        CalculationUtil.addTotalRow(list.getPurchase(), ContractDto::new, dto -> dto.setContractName("합계"));
+
+        return list;
     }
 }

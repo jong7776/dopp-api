@@ -4,7 +4,6 @@ import com.dopp.doppapi.common.response.ApiResult;
 import com.dopp.doppapi.common.utils.ExcelUtil;
 import com.dopp.doppapi.dto.user.UserDto;
 import com.dopp.doppapi.service.user.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,6 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-    private final ObjectMapper objectMapper;
 
     @GetMapping("/info")
     public ResponseEntity<ApiResult<UserDto>> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
@@ -42,14 +40,13 @@ public class UserController {
 
     @PostMapping("/list/excel/download")
     public void downloadUserListExcel(UserDto request, HttpServletResponse response) throws IOException {
-        List<UserDto> userList = userService.getUserList(request);
+        List<UserDto> list = userService.getUserList(request);
 
-        // 엑셀 헤더 설정 (LinkedHashMap으로 순서 보장)
         Map<String, String> headerMap = new LinkedHashMap<>();
         headerMap.put("loginId", "로그인 ID");
         headerMap.put("nickname", "닉네임");
         headerMap.put("role", "권한");
         headerMap.put("isActive", "활성 여부");
-        ExcelUtil.downloadExcel(response, userList, headerMap, "사용자_목록", "사용자 목록");
+        ExcelUtil.downloadExcel(response, list, headerMap, "사용자_목록", "사용자 목록");
     }
 }

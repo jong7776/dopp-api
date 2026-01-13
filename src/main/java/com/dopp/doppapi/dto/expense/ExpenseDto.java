@@ -1,5 +1,6 @@
 package com.dopp.doppapi.dto.expense;
 
+import com.dopp.doppapi.dto.common.MonthlyAmountDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExpenseDto {
+public class ExpenseDto implements MonthlyAmountDto {
     private Long expenseId;
     private String expenseName;
     private Integer year;

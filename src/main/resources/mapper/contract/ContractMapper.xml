@@ -34,4 +34,35 @@
         </if>
         ORDER BY "type" , contract_start, contract_end, contract_id
     </select>
+
+    <insert id="insertContractList" parameterType="java.util.List">
+        INSERT INTO contract_info (
+            "type",
+            "year",
+            contract_name,
+            company_name,
+            contract_start,
+            contract_end,
+            total_amount,
+            m01, m02, m03, m04, m05, m06,
+            m07, m08, m09, m10, m11, m12,
+            created_at,
+            created_by
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+        (
+            #{item.type},
+            #{item.year},
+            #{item.contractName},
+            #{item.companyName},
+            #{item.contractStart},
+            #{item.contractEnd},
+            #{item.totalAmount},
+            #{item.m01}, #{item.m02}, #{item.m03}, #{item.m04}, #{item.m05}, #{item.m06},
+            #{item.m07}, #{item.m08}, #{item.m09}, #{item.m10}, #{item.m11}, #{item.m12},
+            NOW(),
+            #{item.createdBy}
+        )
+        </foreach>
+    </insert>
 </mapper>

@@ -9,4 +9,5 @@ import java.util.List;
 @Mapper
 public interface ContractMapper {
     List<ContractDto> selectContractList(ContractListRequest request);
+    int insertContractList(List<ContractDto> list);
 }
