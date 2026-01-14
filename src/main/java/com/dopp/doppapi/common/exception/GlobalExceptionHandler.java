@@ -38,10 +38,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IOException.class)
     public void handleIOException(IOException e, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String path = request.getRequestURI();
-        log.error("======> Excel 다운로드 중 IOException 발생: {}", path, e);
+
 
         if (path.contains("/excel/download")) {
-            // 다운로드 API에서만 JSON 반환
+            log.error("======> Excel 다운로드 중 IOException 발생: {}", path, e);
             response.reset();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -49,7 +49,15 @@ public class GlobalExceptionHandler {
 
             ApiResult<Void> errorResult = ApiResult.fail(ApiResultCode.FAIL_DOWNLOAD_EXCEL);
             objectMapper.writeValue(response.getWriter(), errorResult);
+        } else if (path.contains("/excel/upload")) {
+            log.error("======> Excel 업로드 중 IOException 발생: {}", path, e);
+            response.reset();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding("UTF-8");
 
+            ApiResult<Void> errorResult = ApiResult.fail(ApiResultCode.FAIL_UPLOAD_EXCEL);
+            objectMapper.writeValue(response.getWriter(), errorResult);
         } else {
             // 일반 API는 그대로 Exception 처리로 위임
             throw new Exception();

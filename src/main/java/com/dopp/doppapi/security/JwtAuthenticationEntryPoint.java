@@ -27,7 +27,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         log.error("======> Unauthorized error: {}", authException.getMessage());
 
         Object exception = request.getAttribute("exception");
-        ApiResultCode resultCode = ApiResultCode.INVALID_TOKEN;
+        ApiResultCode resultCode = ApiResultCode.INVALID_TOKEN_1;
 
         if (exception instanceof ApiResultCode) {
             resultCode = (ApiResultCode) exception;

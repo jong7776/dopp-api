@@ -10,7 +10,7 @@
         SELECT
             expense_id,
             expense_name,
-            year,
+            "year",
             total_amount,
             m01, m02, m03, m04, m05, m06,
             m07, m08, m09, m10, m11, m12,
@@ -21,8 +21,48 @@
         FROM expense_info
         WHERE 1=1
         <if test="year != null">
-            AND year = #{year}
+            AND "year" = #{year}
         </if>
         ORDER BY expense_id DESC
     </select>
+
+    <insert id="insertExpenseList">
+        INSERT INTO expense_info (
+            expense_name,
+            "year",
+            total_amount,
+            m01, m02, m03, m04, m05, m06,
+            m07, m08, m09, m10, m11, m12,
+            created_at,
+            created_by,
+            updated_at,
+            updated_by
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+        (
+            #{item.expenseName},
+            #{item.year},
+            COALESCE(#{item.m01},0) + COALESCE(#{item.m02},0) + COALESCE(#{item.m03},0) +
+            COALESCE(#{item.m04},0) + COALESCE(#{item.m05},0) + COALESCE(#{item.m06},0) +
+            COALESCE(#{item.m07},0) + COALESCE(#{item.m08},0) + COALESCE(#{item.m09},0) +
+            COALESCE(#{item.m10},0) + COALESCE(#{item.m11},0) + COALESCE(#{item.m12},0),
+            COALESCE(#{item.m01},0),
+            COALESCE(#{item.m02},0),
+            COALESCE(#{item.m03},0),
+            COALESCE(#{item.m04},0),
+            COALESCE(#{item.m05},0),
+            COALESCE(#{item.m06},0),
+            COALESCE(#{item.m07},0),
+            COALESCE(#{item.m08},0),
+            COALESCE(#{item.m09},0),
+            COALESCE(#{item.m10},0),
+            COALESCE(#{item.m11},0),
+            COALESCE(#{item.m12},0),
+            NOW(),
+            #{loginId},
+            NOW(),
+            #{loginId}
+        )
+        </foreach>
+    </insert>
 </mapper>

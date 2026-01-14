@@ -70,24 +70,24 @@ public class AuthController {
     @PostMapping("/refreshToken")
     public ResponseEntity<ApiResult<Map<String, String>>> refreshToken(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
         if (refreshToken == null) {
-            return ResponseEntity.status(401).body(ApiResult.fail(ApiResultCode.UNAUTHORIZED_1));
+            return ResponseEntity.status(401).body(ApiResult.fail(ApiResultCode.INVALID_TOKEN_2));
         }
 
         // DB에서 토큰 조회 및 검증
         Optional<RefreshTokenDto> tokenDto = refreshTokenService.findByToken(refreshToken);
         if (tokenDto.isEmpty() || tokenDto.get().isRevoked()) {
-            return ResponseEntity.status(401).body(ApiResult.fail(ApiResultCode.UNAUTHORIZED_2));
+            return ResponseEntity.status(401).body(ApiResult.fail(ApiResultCode.INVALID_TOKEN_3));
         }
 
         try {
             refreshTokenService.verifyExpiration(tokenDto.get());
         } catch (RuntimeException e) {
-            return ResponseEntity.status(401).body(ApiResult.fail(ApiResultCode.UNAUTHORIZED_3));
+            return ResponseEntity.status(401).body(ApiResult.fail(ApiResultCode.INVALID_TOKEN_4));
         }
 
         // JWT 자체 유효성 검증 (선택 사항, DB 만료일과 이중 체크)
         if (!jwtUtil.validateToken(refreshToken)) {
-            return ResponseEntity.status(401).body(ApiResult.fail(ApiResultCode.UNAUTHORIZED_4));
+            return ResponseEntity.status(401).body(ApiResult.fail(ApiResultCode.INVALID_TOKEN_5));
         }
 
         String loginId = jwtUtil.getLoginIdFromToken(refreshToken);
