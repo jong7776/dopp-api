@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/doppdb
+    username: dopp_master
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+logging:
+  level:
+    root: INFO
+    org.mybatis: WARN
+    org.springframework.jdbc: WARN
+    org.mybatis.mapper: DEBUG
+    org.postgresql: DEBUG
+    com.dopp.doppapi.mapper: DEBUG
+    com.zaxxer.hikari: WARN
+
+jwt:
+  secret: mySuperSecretKey12345mySuperSecretKey12345
+  access-token-validity: 60000       # 15분
+  refresh-token-validity: 86400000   # 1일
+
+security:
+  cookie:
+    secure: false
+    same-site: Lax
+

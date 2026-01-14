@@ -1,31 +1,14 @@
 server:
   port: 8080
+
 spring:
   application:
     name: dopp-api
-  datasource:
-    url: jdbc:postgresql://localhost:5432/doppdb
-    username: dopp_master
-    password: 1234
-    driver-class-name: org.postgresql.Driver
+  profiles:
+    active: dev   # 기본 실행 환경 (운영 배포 시 prd로 변경)
 
 mybatis:
   mapper-locations: classpath*:mapper/**/*.xml
   type-aliases-package: com.dopp.doppapi.dto
   configuration:
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
-
-logging:
-  level:
-    root: INFO                    # 전체 기본 로그 INFO 이상만 출력
-    org.mybatis: WARN               # MyBatis 관련 로그 최소화
-    org.springframework.jdbc: WARN  # JDBC 관련 디버그 로그 최소화
-    org.mybatis.mapper: DEBUG       # Mapper SQL 로그
-    org.postgresql: DEBUG
-    com.dopp.doppapi.mapper: DEBUG  # Mapper 인터페이스 패키지 경로
-    com.zaxxer.hikari: WARN         # HikariCP 풀 관련 디버그 최소화
-
-jwt:
-  secret: mySuperSecretKey12345mySuperSecretKey12345
-  access-token-validity: 900000 # 15 * 60 * 1000; // 15분
-  refresh-token-validity: 86400000 # 1 * 24 * 60 * 60 * 1000; // 1일

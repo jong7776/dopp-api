@@ -2,18 +2,19 @@ package com.dopp.doppapi.controller.auth;
 
 import com.dopp.doppapi.common.response.ApiResult;
 import com.dopp.doppapi.common.response.ApiResultCode;
+import com.dopp.doppapi.config.properties.CookieProperties;
 import com.dopp.doppapi.dto.auth.LoginRequest;
 import com.dopp.doppapi.dto.auth.RefreshTokenDto;
 import com.dopp.doppapi.dto.user.UserDto;
 import com.dopp.doppapi.security.JwtUtil;
 import com.dopp.doppapi.service.auth.RefreshTokenService;
 import com.dopp.doppapi.service.user.UserService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ public class AuthController {
     @Value("${jwt.refresh-token-validity}")
     private long refreshTokenValidity;
 
+    private final CookieProperties cookieProperties;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final RefreshTokenService refreshTokenService;
@@ -51,13 +53,16 @@ public class AuthController {
         String ipAddress = httpRequest.getRemoteAddr();
         refreshTokenService.createRefreshToken(user.getUserId(), refreshToken, userAgent, ipAddress);
 
-        // Refresh Token을 HttpOnly Cookie에 저장
-        Cookie refreshCookie = new Cookie("refreshToken", refreshToken);
-        refreshCookie.setHttpOnly(true);
-        refreshCookie.setSecure(true); // HTTPS 사용 시 true
-        refreshCookie.setPath("/");
-        refreshCookie.setMaxAge((int) refreshTokenValidity); // 1일
-        response.addCookie(refreshCookie);
+        // Refresh Token을 HttpOnly Cookie에 저장 (ResponseCookie 사용)
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(cookieProperties.isSecure()) // 로컬 개발 환경(http)에서는 false여야 함. 운영(https)에서는 true
+                .sameSite(cookieProperties.getSameSite()) // 또는 "None" (Secure=true 필수)
+                .path("/")
+                .maxAge(refreshTokenValidity / 1000) // 초 단위
+                .build();
+        
+        response.addHeader("Set-Cookie", refreshCookie.toString());
 
         Map<String, String> tokens = new HashMap<>();
         tokens.put("accessToken", accessToken);
@@ -107,12 +112,14 @@ public class AuthController {
             refreshTokenService.revokeToken(refreshToken);
         }
 
-        Cookie refreshCookie = new Cookie("refreshToken", null);
-        refreshCookie.setHttpOnly(true);
-        refreshCookie.setSecure(true);
-        refreshCookie.setPath("/");
-        refreshCookie.setMaxAge(0); // 쿠키 삭제
-        response.addCookie(refreshCookie);
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", "")
+                .httpOnly(true)
+                .secure(cookieProperties.isSecure()) // 로컬 개발 환경(http)에서는 false여야 함. 운영(https)에서는 true
+                .sameSite(cookieProperties.getSameSite()) // 또는 "None" (Secure=true 필수)
+                .path("/")
+                .maxAge(0)
+                .build();
+        response.addHeader("Set-Cookie", refreshCookie.toString());
 
         return ResponseEntity.ok(ApiResult.success(null));
     }
