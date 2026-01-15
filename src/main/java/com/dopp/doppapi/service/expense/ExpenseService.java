@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +40,7 @@ public class ExpenseService {
         List<ExpenseDto> list = ExcelUtil.uploadExcelByColumnOrder(file, ExpenseDto.class, headerMap);
 
         if (!list.isEmpty()) {
+            list.forEach(this::convertToNegative);
             expenseMapper.insertExpenseList(list, loginId);
         }
     }
@@ -46,11 +48,13 @@ public class ExpenseService {
     public void createExpense(ExpenseDto request, String loginId) {
         request.setCreatedBy(loginId);
         request.setUpdatedBy(loginId);
+        convertToNegative(request);
         expenseMapper.insertExpense(request);
     }
 
     public void updateExpense(ExpenseDto request, String loginId) {
         request.setUpdatedBy(loginId);
+        convertToNegative(request);
         expenseMapper.updateExpense(request);
     }
 
@@ -62,5 +66,22 @@ public class ExpenseService {
 
     public void deleteAllExpenseList(ExpenseDto request) {
         expenseMapper.deleteAllExpenseList(request);
+    }
+
+    private void convertToNegative(ExpenseDto dto) {
+        Function<Long, Long> toNegative = val -> (val != null && val > 0) ? Long.valueOf(-val) : val;
+
+        dto.setM01(toNegative.apply(dto.getM01()));
+        dto.setM02(toNegative.apply(dto.getM02()));
+        dto.setM03(toNegative.apply(dto.getM03()));
+        dto.setM04(toNegative.apply(dto.getM04()));
+        dto.setM05(toNegative.apply(dto.getM05()));
+        dto.setM06(toNegative.apply(dto.getM06()));
+        dto.setM07(toNegative.apply(dto.getM07()));
+        dto.setM08(toNegative.apply(dto.getM08()));
+        dto.setM09(toNegative.apply(dto.getM09()));
+        dto.setM10(toNegative.apply(dto.getM10()));
+        dto.setM11(toNegative.apply(dto.getM11()));
+        dto.setM12(toNegative.apply(dto.getM12()));
     }
 }

@@ -95,7 +95,7 @@ public class ContractController extends BaseController {
     }
 
     @PostMapping("/delete/all")
-    public ResponseEntity<ApiResult<Void>> deleteContractByYear(@RequestParam ContractDto request) {
+    public ResponseEntity<ApiResult<Void>> deleteContractByYear(@RequestBody ContractDto request) {
         ResponseEntity<ApiResult<Void>> authResponse = checkAuthentication();
         if (authResponse != null) {
             return authResponse;

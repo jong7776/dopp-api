@@ -179,5 +179,6 @@
     <delete id="deleteContractByYear">
         DELETE FROM contract_info
         WHERE "year" = #{year}
+          AND "type" = #{type}
     </delete>
 </mapper>
