@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/expense")
+@RequestMapping("/api/financial-management/expense")
 @RequiredArgsConstructor
 public class ExpenseController extends BaseController {
     private final ExcelHeaderMapService excelHeaderMapService;
@@ -60,42 +60,42 @@ public class ExpenseController extends BaseController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResult<Void>> createExpense(@RequestBody ExpenseDto expenseDto) {
+    public ResponseEntity<ApiResult<Void>> createExpense(@RequestBody ExpenseDto request) {
         ResponseEntity<ApiResult<Void>> authResponse = checkAuthentication();
         if (authResponse != null) {
             return authResponse;
         }
-        expenseService.createExpense(expenseDto, getLoginId());
+        expenseService.createExpense(request, getLoginId());
         return ResponseEntity.ok(ApiResult.success(null));
     }
 
     @PostMapping("/update")
-    public ResponseEntity<ApiResult<Void>> updateExpense(@RequestBody ExpenseDto expenseDto) {
+    public ResponseEntity<ApiResult<Void>> updateExpense(@RequestBody ExpenseDto request) {
         ResponseEntity<ApiResult<Void>> authResponse = checkAuthentication();
         if (authResponse != null) {
             return authResponse;
         }
-        expenseService.updateExpense(expenseDto, getLoginId());
+        expenseService.updateExpense(request, getLoginId());
         return ResponseEntity.ok(ApiResult.success(null));
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<ApiResult<Void>> deleteExpenses(@RequestBody ExpenseDeleteRequest request) {
+    public ResponseEntity<ApiResult<Void>> deleteExpenseList(@RequestBody ExpenseDeleteRequest request) {
         ResponseEntity<ApiResult<Void>> authResponse = checkAuthentication();
         if (authResponse != null) {
             return authResponse;
         }
-        expenseService.deleteExpenses(request.getExpenseIds());
+        expenseService.deleteExpenseList(request.getExpenseIds());
         return ResponseEntity.ok(ApiResult.success(null));
     }
 
     @PostMapping("/delete/all")
-    public ResponseEntity<ApiResult<Void>> deleteAllExpenses(@RequestBody ExpenseDto expenseDto) {
+    public ResponseEntity<ApiResult<Void>> deleteAllExpenseList(@RequestBody ExpenseDto request) {
         ResponseEntity<ApiResult<Void>> authResponse = checkAuthentication();
         if (authResponse != null) {
             return authResponse;
         }
-        expenseService.deleteAllExpenses(expenseDto);
+        expenseService.deleteAllExpenseList(request);
         return ResponseEntity.ok(ApiResult.success(null));
     }
 }

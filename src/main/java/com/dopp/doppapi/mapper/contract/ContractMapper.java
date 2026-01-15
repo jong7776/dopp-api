@@ -11,4 +11,8 @@ import java.util.List;
 public interface ContractMapper {
     List<ContractDto> selectContractList(ContractListRequest request);
     void insertContractList(@Param("list") List<ContractDto> list, @Param("loginId") String loginId);
+    void insertContract(ContractDto contractDto);
+    void updateContract(ContractDto contractDto);
+    void deleteContractList(@Param("list") List<Long> contractIds);
+    void deleteContractByYear(ContractDto contractDto);
 }

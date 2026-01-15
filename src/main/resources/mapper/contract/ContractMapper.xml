@@ -86,4 +86,98 @@
         )
         </foreach>
     </insert>
+
+    <insert id="insertContract" parameterType="com.dopp.doppapi.dto.contract.ContractDto">
+        INSERT INTO contract_info (
+            "type",
+            "year",
+            contract_name,
+            company_name,
+            contract_start,
+            contract_end,
+            invoice_rule,
+            payment_term,
+            total_amount,
+            m01, m02, m03, m04, m05, m06,
+            m07, m08, m09, m10, m11, m12,
+            created_at,
+            created_by,
+            updated_at,
+            updated_by
+        ) VALUES (
+            #{type},
+            #{year},
+            #{contractName},
+            #{companyName},
+            #{contractStart},
+            #{contractEnd},
+            #{invoiceRule},
+            #{paymentTerm},
+            COALESCE(#{m01},0) + COALESCE(#{m02},0) + COALESCE(#{m03},0) +
+            COALESCE(#{m04},0) + COALESCE(#{m05},0) + COALESCE(#{m06},0) +
+            COALESCE(#{m07},0) + COALESCE(#{m08},0) + COALESCE(#{m09},0) +
+            COALESCE(#{m10},0) + COALESCE(#{m11},0) + COALESCE(#{m12},0),
+            COALESCE(#{m01},0),
+            COALESCE(#{m02},0),
+            COALESCE(#{m03},0),
+            COALESCE(#{m04},0),
+            COALESCE(#{m05},0),
+            COALESCE(#{m06},0),
+            COALESCE(#{m07},0),
+            COALESCE(#{m08},0),
+            COALESCE(#{m09},0),
+            COALESCE(#{m10},0),
+            COALESCE(#{m11},0),
+            COALESCE(#{m12},0),
+            NOW(),
+            #{createdBy},
+            NOW(),
+            #{updatedBy}
+        )
+    </insert>
+
+    <update id="updateContract" parameterType="com.dopp.doppapi.dto.contract.ContractDto">
+        UPDATE contract_info
+        SET
+            "type" = #{type},
+            "year" = #{year},
+            contract_name = #{contractName},
+            company_name = #{companyName},
+            contract_start = #{contractStart},
+            contract_end = #{contractEnd},
+            invoice_rule = #{invoiceRule},
+            payment_term = #{paymentTerm},
+            total_amount = COALESCE(#{m01},0) + COALESCE(#{m02},0) + COALESCE(#{m03},0) +
+                           COALESCE(#{m04},0) + COALESCE(#{m05},0) + COALESCE(#{m06},0) +
+                           COALESCE(#{m07},0) + COALESCE(#{m08},0) + COALESCE(#{m09},0) +
+                           COALESCE(#{m10},0) + COALESCE(#{m11},0) + COALESCE(#{m12},0),
+            m01 = COALESCE(#{m01},0),
+            m02 = COALESCE(#{m02},0),
+            m03 = COALESCE(#{m03},0),
+            m04 = COALESCE(#{m04},0),
+            m05 = COALESCE(#{m05},0),
+            m06 = COALESCE(#{m06},0),
+            m07 = COALESCE(#{m07},0),
+            m08 = COALESCE(#{m08},0),
+            m09 = COALESCE(#{m09},0),
+            m10 = COALESCE(#{m10},0),
+            m11 = COALESCE(#{m11},0),
+            m12 = COALESCE(#{m12},0),
+            updated_at = NOW(),
+            updated_by = #{updatedBy}
+        WHERE contract_id = #{contractId}
+    </update>
+
+    <delete id="deleteContractList">
+        DELETE FROM contract_info
+        WHERE contract_id IN
+        <foreach collection="list" item="contractId" open="(" separator="," close=")">
+            #{contractId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteContractByYear">
+        DELETE FROM contract_info
+        WHERE "year" = #{year}
+    </delete>
 </mapper>

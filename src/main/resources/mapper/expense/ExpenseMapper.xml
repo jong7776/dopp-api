@@ -78,58 +78,58 @@
             updated_at,
             updated_by
         ) VALUES (
-            #{dto.expenseName},
-            #{dto.year},
-            COALESCE(#{dto.m01},0) + COALESCE(#{dto.m02},0) + COALESCE(#{dto.m03},0) +
-            COALESCE(#{dto.m04},0) + COALESCE(#{dto.m05},0) + COALESCE(#{dto.m06},0) +
-            COALESCE(#{dto.m07},0) + COALESCE(#{dto.m08},0) + COALESCE(#{dto.m09},0) +
-            COALESCE(#{dto.m10},0) + COALESCE(#{dto.m11},0) + COALESCE(#{dto.m12},0),
-            COALESCE(#{dto.m01},0),
-            COALESCE(#{dto.m02},0),
-            COALESCE(#{dto.m03},0),
-            COALESCE(#{dto.m04},0),
-            COALESCE(#{dto.m05},0),
-            COALESCE(#{dto.m06},0),
-            COALESCE(#{dto.m07},0),
-            COALESCE(#{dto.m08},0),
-            COALESCE(#{dto.m09},0),
-            COALESCE(#{dto.m10},0),
-            COALESCE(#{dto.m11},0),
-            COALESCE(#{dto.m12},0),
+            #{expenseName},
+            #{year},
+            COALESCE(#{m01},0) + COALESCE(#{m02},0) + COALESCE(#{m03},0) +
+            COALESCE(#{m04},0) + COALESCE(#{m05},0) + COALESCE(#{m06},0) +
+            COALESCE(#{m07},0) + COALESCE(#{m08},0) + COALESCE(#{m09},0) +
+            COALESCE(#{m10},0) + COALESCE(#{m11},0) + COALESCE(#{m12},0),
+            COALESCE(#{m01},0),
+            COALESCE(#{m02},0),
+            COALESCE(#{m03},0),
+            COALESCE(#{m04},0),
+            COALESCE(#{m05},0),
+            COALESCE(#{m06},0),
+            COALESCE(#{m07},0),
+            COALESCE(#{m08},0),
+            COALESCE(#{m09},0),
+            COALESCE(#{m10},0),
+            COALESCE(#{m11},0),
+            COALESCE(#{m12},0),
             NOW(),
-            #{loginId},
+            #{createdBy},
             NOW(),
-            #{loginId}
+            #{updatedBy}
         )
     </insert>
 
     <update id="updateExpense">
         UPDATE expense_info
         SET
-            expense_name = #{dto.expenseName},
-            "year" = #{dto.year},
-            total_amount = COALESCE(#{dto.m01},0) + COALESCE(#{dto.m02},0) + COALESCE(#{dto.m03},0) +
-                           COALESCE(#{dto.m04},0) + COALESCE(#{dto.m05},0) + COALESCE(#{dto.m06},0) +
-                           COALESCE(#{dto.m07},0) + COALESCE(#{dto.m08},0) + COALESCE(#{dto.m09},0) +
-                           COALESCE(#{dto.m10},0) + COALESCE(#{dto.m11},0) + COALESCE(#{dto.m12},0),
-            m01 = COALESCE(#{dto.m01},0),
-            m02 = COALESCE(#{dto.m02},0),
-            m03 = COALESCE(#{dto.m03},0),
-            m04 = COALESCE(#{dto.m04},0),
-            m05 = COALESCE(#{dto.m05},0),
-            m06 = COALESCE(#{dto.m06},0),
-            m07 = COALESCE(#{dto.m07},0),
-            m08 = COALESCE(#{dto.m08},0),
-            m09 = COALESCE(#{dto.m09},0),
-            m10 = COALESCE(#{dto.m10},0),
-            m11 = COALESCE(#{dto.m11},0),
-            m12 = COALESCE(#{dto.m12},0),
+            expense_name = #{expenseName},
+            "year" = #{year},
+            total_amount = COALESCE(#{m01},0) + COALESCE(#{m02},0) + COALESCE(#{m03},0) +
+                           COALESCE(#{m04},0) + COALESCE(#{m05},0) + COALESCE(#{m06},0) +
+                           COALESCE(#{m07},0) + COALESCE(#{m08},0) + COALESCE(#{m09},0) +
+                           COALESCE(#{m10},0) + COALESCE(#{m11},0) + COALESCE(#{m12},0),
+            m01 = COALESCE(#{m01},0),
+            m02 = COALESCE(#{m02},0),
+            m03 = COALESCE(#{m03},0),
+            m04 = COALESCE(#{m04},0),
+            m05 = COALESCE(#{m05},0),
+            m06 = COALESCE(#{m06},0),
+            m07 = COALESCE(#{m07},0),
+            m08 = COALESCE(#{m08},0),
+            m09 = COALESCE(#{m09},0),
+            m10 = COALESCE(#{m10},0),
+            m11 = COALESCE(#{m11},0),
+            m12 = COALESCE(#{m12},0),
             updated_at = NOW(),
-            updated_by = #{loginId}
-        WHERE expense_id = #{dto.expenseId}
+            updated_by = #{updatedBy}
+        WHERE expense_id = #{expenseId}
     </update>
 
-    <delete id="deleteExpenses">
+    <delete id="deleteExpenseList">
         DELETE FROM expense_info
         WHERE expense_id IN
         <foreach collection="list" item="expenseId" open="(" separator="," close=")">
@@ -137,8 +137,8 @@
         </foreach>
     </delete>
 
-    <delete id="deleteAllExpenses">
+    <delete id="deleteAllExpenseList">
         DELETE FROM expense_info
-        where "year" = #{dto.year}
+        where "year" = #{year}
     </delete>
 </mapper>

@@ -11,7 +11,7 @@ logging:
     org.mybatis: WARN
     org.springframework.jdbc: WARN
     org.mybatis.mapper: DEBUG
-    org.postgresql: DEBUG
+    org.postgresql: WARN
     com.dopp.doppapi.mapper: DEBUG
     com.zaxxer.hikari: WARN
 

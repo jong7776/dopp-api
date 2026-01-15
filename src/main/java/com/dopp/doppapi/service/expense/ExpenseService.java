@@ -43,21 +43,24 @@ public class ExpenseService {
         }
     }
 
-    public void createExpense(ExpenseDto expenseDto, String loginId) {
-        expenseMapper.insertExpense(expenseDto, loginId);
+    public void createExpense(ExpenseDto request, String loginId) {
+        request.setCreatedBy(loginId);
+        request.setUpdatedBy(loginId);
+        expenseMapper.insertExpense(request);
     }
 
-    public void updateExpense(ExpenseDto expenseDto, String loginId) {
-        expenseMapper.updateExpense(expenseDto, loginId);
+    public void updateExpense(ExpenseDto request, String loginId) {
+        request.setUpdatedBy(loginId);
+        expenseMapper.updateExpense(request);
     }
 
-    public void deleteExpenses(List<Long> expenseIds) {
+    public void deleteExpenseList(List<Long> expenseIds) {
         if (expenseIds != null && !expenseIds.isEmpty()) {
-            expenseMapper.deleteExpenses(expenseIds);
+            expenseMapper.deleteExpenseList(expenseIds);
         }
     }
 
-    public void deleteAllExpenses(ExpenseDto expenseDto) {
-        expenseMapper.deleteAllExpenses(expenseDto);
+    public void deleteAllExpenseList(ExpenseDto request) {
+        expenseMapper.deleteAllExpenseList(request);
     }
 }

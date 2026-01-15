@@ -2,6 +2,7 @@ package com.dopp.doppapi.service.contract;
 
 import com.dopp.doppapi.common.utils.CalculationUtil;
 import com.dopp.doppapi.common.utils.ExcelUtil;
+import com.dopp.doppapi.dto.contract.ContractDeleteRequest;
 import com.dopp.doppapi.dto.contract.ContractDto;
 import com.dopp.doppapi.dto.contract.ContractListRequest;
 import com.dopp.doppapi.dto.contract.ContractListResponse;
@@ -55,5 +56,30 @@ public class ContractService {
         if (!list.isEmpty()) {
             contractMapper.insertContractList(list, loginId);
         }
+    }
+
+    @Transactional
+    public void createContract(ContractDto request, String loginId) {
+        request.setCreatedBy(loginId);
+        request.setUpdatedBy(loginId);
+        contractMapper.insertContract(request);
+    }
+
+    @Transactional
+    public void updateContract(ContractDto request, String loginId) {
+        request.setUpdatedBy(loginId);
+        contractMapper.updateContract(request);
+    }
+
+    @Transactional
+    public void deleteContractList(ContractDeleteRequest request) {
+        if (request.getContractIds() != null && !request.getContractIds().isEmpty()) {
+            contractMapper.deleteContractList(request.getContractIds());
+        }
+    }
+
+    @Transactional
+    public void deleteContractByYear(ContractDto request) {
+        contractMapper.deleteContractByYear(request);
     }
 }
