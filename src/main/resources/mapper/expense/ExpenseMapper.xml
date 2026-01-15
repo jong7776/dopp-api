@@ -65,4 +65,80 @@
         )
         </foreach>
     </insert>
+
+    <insert id="insertExpense">
+        INSERT INTO expense_info (
+            expense_name,
+            "year",
+            total_amount,
+            m01, m02, m03, m04, m05, m06,
+            m07, m08, m09, m10, m11, m12,
+            created_at,
+            created_by,
+            updated_at,
+            updated_by
+        ) VALUES (
+            #{dto.expenseName},
+            #{dto.year},
+            COALESCE(#{dto.m01},0) + COALESCE(#{dto.m02},0) + COALESCE(#{dto.m03},0) +
+            COALESCE(#{dto.m04},0) + COALESCE(#{dto.m05},0) + COALESCE(#{dto.m06},0) +
+            COALESCE(#{dto.m07},0) + COALESCE(#{dto.m08},0) + COALESCE(#{dto.m09},0) +
+            COALESCE(#{dto.m10},0) + COALESCE(#{dto.m11},0) + COALESCE(#{dto.m12},0),
+            COALESCE(#{dto.m01},0),
+            COALESCE(#{dto.m02},0),
+            COALESCE(#{dto.m03},0),
+            COALESCE(#{dto.m04},0),
+            COALESCE(#{dto.m05},0),
+            COALESCE(#{dto.m06},0),
+            COALESCE(#{dto.m07},0),
+            COALESCE(#{dto.m08},0),
+            COALESCE(#{dto.m09},0),
+            COALESCE(#{dto.m10},0),
+            COALESCE(#{dto.m11},0),
+            COALESCE(#{dto.m12},0),
+            NOW(),
+            #{loginId},
+            NOW(),
+            #{loginId}
+        )
+    </insert>
+
+    <update id="updateExpense">
+        UPDATE expense_info
+        SET
+            expense_name = #{dto.expenseName},
+            "year" = #{dto.year},
+            total_amount = COALESCE(#{dto.m01},0) + COALESCE(#{dto.m02},0) + COALESCE(#{dto.m03},0) +
+                           COALESCE(#{dto.m04},0) + COALESCE(#{dto.m05},0) + COALESCE(#{dto.m06},0) +
+                           COALESCE(#{dto.m07},0) + COALESCE(#{dto.m08},0) + COALESCE(#{dto.m09},0) +
+                           COALESCE(#{dto.m10},0) + COALESCE(#{dto.m11},0) + COALESCE(#{dto.m12},0),
+            m01 = COALESCE(#{dto.m01},0),
+            m02 = COALESCE(#{dto.m02},0),
+            m03 = COALESCE(#{dto.m03},0),
+            m04 = COALESCE(#{dto.m04},0),
+            m05 = COALESCE(#{dto.m05},0),
+            m06 = COALESCE(#{dto.m06},0),
+            m07 = COALESCE(#{dto.m07},0),
+            m08 = COALESCE(#{dto.m08},0),
+            m09 = COALESCE(#{dto.m09},0),
+            m10 = COALESCE(#{dto.m10},0),
+            m11 = COALESCE(#{dto.m11},0),
+            m12 = COALESCE(#{dto.m12},0),
+            updated_at = NOW(),
+            updated_by = #{loginId}
+        WHERE expense_id = #{dto.expenseId}
+    </update>
+
+    <delete id="deleteExpenses">
+        DELETE FROM expense_info
+        WHERE expense_id IN
+        <foreach collection="list" item="expenseId" open="(" separator="," close=")">
+            #{expenseId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAllExpenses">
+        DELETE FROM expense_info
+        where "year" = #{dto.year}
+    </delete>
 </mapper>

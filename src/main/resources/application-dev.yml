@@ -17,7 +17,8 @@ logging:
 
 jwt:
   secret: mySuperSecretKey12345mySuperSecretKey12345
-  access-token-validity: 60000       # 15분
+  #access-token-validity: 60000       # 1분
+  access-token-validity: 900000 # 15 * 60 * 1000; // 15분
   refresh-token-validity: 86400000   # 1일
 
 security:

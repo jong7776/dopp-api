@@ -3,6 +3,7 @@ package com.dopp.doppapi.controller.expense;
 import com.dopp.doppapi.common.response.ApiResult;
 import com.dopp.doppapi.common.utils.ExcelUtil;
 import com.dopp.doppapi.controller.common.BaseController;
+import com.dopp.doppapi.dto.expense.ExpenseDeleteRequest;
 import com.dopp.doppapi.dto.expense.ExpenseDto;
 import com.dopp.doppapi.dto.expense.ExpenseListRequest;
 import com.dopp.doppapi.service.common.ExcelHeaderMapService;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,6 +56,46 @@ public class ExpenseController extends BaseController {
         }
 
         expenseService.uploadExcelExpenseList(file, getLoginId());
+        return ResponseEntity.ok(ApiResult.success(null));
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<ApiResult<Void>> createExpense(@RequestBody ExpenseDto expenseDto) {
+        ResponseEntity<ApiResult<Void>> authResponse = checkAuthentication();
+        if (authResponse != null) {
+            return authResponse;
+        }
+        expenseService.createExpense(expenseDto, getLoginId());
+        return ResponseEntity.ok(ApiResult.success(null));
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<ApiResult<Void>> updateExpense(@RequestBody ExpenseDto expenseDto) {
+        ResponseEntity<ApiResult<Void>> authResponse = checkAuthentication();
+        if (authResponse != null) {
+            return authResponse;
+        }
+        expenseService.updateExpense(expenseDto, getLoginId());
+        return ResponseEntity.ok(ApiResult.success(null));
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<ApiResult<Void>> deleteExpenses(@RequestBody ExpenseDeleteRequest request) {
+        ResponseEntity<ApiResult<Void>> authResponse = checkAuthentication();
+        if (authResponse != null) {
+            return authResponse;
+        }
+        expenseService.deleteExpenses(request.getExpenseIds());
+        return ResponseEntity.ok(ApiResult.success(null));
+    }
+
+    @PostMapping("/delete/all")
+    public ResponseEntity<ApiResult<Void>> deleteAllExpenses(@RequestBody ExpenseDto expenseDto) {
+        ResponseEntity<ApiResult<Void>> authResponse = checkAuthentication();
+        if (authResponse != null) {
+            return authResponse;
+        }
+        expenseService.deleteAllExpenses(expenseDto);
         return ResponseEntity.ok(ApiResult.success(null));
     }
 }

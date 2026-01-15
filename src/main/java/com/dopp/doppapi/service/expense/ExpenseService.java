@@ -42,4 +42,22 @@ public class ExpenseService {
             expenseMapper.insertExpenseList(list, loginId);
         }
     }
+
+    public void createExpense(ExpenseDto expenseDto, String loginId) {
+        expenseMapper.insertExpense(expenseDto, loginId);
+    }
+
+    public void updateExpense(ExpenseDto expenseDto, String loginId) {
+        expenseMapper.updateExpense(expenseDto, loginId);
+    }
+
+    public void deleteExpenses(List<Long> expenseIds) {
+        if (expenseIds != null && !expenseIds.isEmpty()) {
+            expenseMapper.deleteExpenses(expenseIds);
+        }
+    }
+
+    public void deleteAllExpenses(ExpenseDto expenseDto) {
+        expenseMapper.deleteAllExpenses(expenseDto);
+    }
 }
