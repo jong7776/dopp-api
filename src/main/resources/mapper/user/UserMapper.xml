@@ -4,14 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dopp.doppapi.mapper.user.UserMapper">
     <select id="selectUserInfoByLoginId" resultType="com.dopp.doppapi.dto.user.UserDto">
-        SELECT user_id, login_id, nickname, role, is_active, password
+        SELECT user_id, login_id, nickname, role, is_active, password, is_first_login, created_at, updated_at, created_by, updated_by
         FROM user_info
         WHERE login_id = #{loginId}
     </select>
 
+    <select id="selectUserInfoByUserId" resultType="com.dopp.doppapi.dto.user.UserDto">
+        SELECT user_id, login_id, nickname, role, is_active, password, is_first_login, created_at, updated_at, created_by, updated_by
+        FROM user_info
+        WHERE user_id = #{userId}
+    </select>
 
     <select id="selectUserList" resultType="com.dopp.doppapi.dto.user.UserDto">
-        SELECT user_id, login_id, nickname, role, is_active
+        SELECT user_id, login_id, nickname, role, is_active, is_first_login
         FROM user_info
         WHERE 1=1
             <if test="userId != null and userId != 0">
@@ -30,4 +35,56 @@
                 AND is_active = #{isActive}
             </if>
     </select>
+
+    <insert id="insertUser" parameterType="com.dopp.doppapi.dto.user.UserDto" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO user_info (
+            login_id,
+            password,
+            nickname,
+            role,
+            is_active,
+            is_first_login,
+            created_at,
+            updated_at,
+            created_by,
+            updated_by
+        ) VALUES (
+            #{loginId},
+            #{password},
+            #{nickname},
+            #{role},
+            #{isActive},
+            #{isFirstLogin},
+            NOW(),
+            NOW(),
+            #{createdBy},
+            #{updatedBy}
+        )
+    </insert>
+
+    <update id="updateUser" parameterType="com.dopp.doppapi.dto.user.UserDto">
+        UPDATE user_info
+        SET
+            nickname = #{nickname},
+            role = #{role},
+            is_active = #{isActive},
+            updated_at = NOW(),
+            updated_by = #{updatedBy}
+        WHERE user_id = #{userId}
+    </update>
+
+    <delete id="deleteUser">
+        DELETE FROM user_info
+        WHERE user_id = #{userId}
+    </delete>
+
+    <update id="updatePassword" parameterType="com.dopp.doppapi.dto.user.UserPasswordUpdateRequest">
+        UPDATE user_info
+        SET
+            password = #{newPassword},
+            is_first_login = #{isFirstLogin},
+            updated_at = NOW(),
+            updated_by = #{updatedBy}
+        WHERE login_id = #{loginId}
+    </update>
 </mapper>
