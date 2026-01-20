@@ -6,7 +6,6 @@ import com.dopp.doppapi.dto.user.UserPasswordUpdateRequest;
 import com.dopp.doppapi.dto.user.UserUpdateRequest;
 import com.dopp.doppapi.mapper.user.UserMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserMapper userMapper;
-    private final PasswordEncoder passwordEncoder;
 
     public UserDto getUserInfoByLoginId(String loginId) {
         return userMapper.selectUserInfoByLoginId(loginId);
+    }
+    public UserDto getUserInfoByUserId(Long userId) {
+        return userMapper.selectUserInfoByUserId(userId);
     }
 
     public List<UserDto> getUserList(UserDto request) {
@@ -30,7 +31,7 @@ public class UserService {
     public void createUser(UserCreateRequest request, String loginId) {
         UserDto userDto = new UserDto();
         userDto.setLoginId(request.getLoginId());
-        userDto.setPassword(passwordEncoder.encode(request.getPassword()));
+        userDto.setPassword(request.getPassword());
         userDto.setNickname(request.getNickname());
         userDto.setRole(request.getRole());
         userDto.setIsActive(true);

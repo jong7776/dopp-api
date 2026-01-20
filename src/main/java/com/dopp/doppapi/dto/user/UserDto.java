@@ -22,7 +22,7 @@ public class UserDto {
     @Schema(description = "닉네임")
     private String nickname;
     
-    @Schema(description = "권한 (admin, staff 등)")
+    @Schema(description = "권한 (admin, user, master)")
     private String role;
     
     @Schema(description = "활성 여부")

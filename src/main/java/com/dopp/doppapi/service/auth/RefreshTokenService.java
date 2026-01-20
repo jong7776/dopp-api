@@ -49,4 +49,9 @@ public class RefreshTokenService {
     public void revokeToken(String token) {
         refreshTokenMapper.revokeToken(token);
     }
+
+    @Transactional
+    public void revokeAllUserTokens(Long userId) {
+        refreshTokenMapper.revokeAllUserTokens(userId);
+    }
 }

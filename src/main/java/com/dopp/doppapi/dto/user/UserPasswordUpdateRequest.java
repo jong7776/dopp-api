@@ -6,6 +6,9 @@ import lombok.Data;
 @Data
 @Schema(description = "사용자 비밀번호 변경 요청 DTO")
 public class UserPasswordUpdateRequest {
+    @Schema(description = "사용자 ID (PK)", example = "4")
+    private Long userId;
+
     @Schema(description = "로그인 ID", hidden = true)
     private String loginId;
 

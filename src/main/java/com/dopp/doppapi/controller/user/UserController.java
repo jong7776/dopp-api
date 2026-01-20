@@ -10,6 +10,7 @@ import com.dopp.doppapi.dto.user.UserPasswordUpdateRequest;
 import com.dopp.doppapi.dto.user.UserUpdateRequest;
 import com.dopp.doppapi.security.JwtUtil;
 import com.dopp.doppapi.service.auth.AuthService;
+import com.dopp.doppapi.service.auth.RefreshTokenService;
 import com.dopp.doppapi.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -36,8 +37,9 @@ public class UserController extends BaseController {
     private final JwtUtil jwtUtil;
     private final UserService userService;
     private final AuthService authService;
+    private final RefreshTokenService refreshTokenService;
 
-    @GetMapping("/info")
+    @GetMapping("/my")
     @Operation(summary = "내 정보 조회", description = "현재 로그인한 사용자의 정보를 조회합니다.")
     public ResponseEntity<ApiResult<UserDto>> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(ApiResult.success(userService.getUserInfoByLoginId(userDetails.getUsername())));
@@ -69,6 +71,7 @@ public class UserController extends BaseController {
         if (authResponse != null) {
             return authResponse;
         }
+        request.setPassword(authService.getPasswordEncode(request.getLoginId() + "!@"));
         userService.createUser(request, getLoginId());
         return ResponseEntity.ok(ApiResult.success(null));
     }
@@ -81,6 +84,11 @@ public class UserController extends BaseController {
             return authResponse;
         }
         userService.updateUser(request, getLoginId());
+
+        if (Boolean.FALSE.equals(request.getIsActive())) {
+            refreshTokenService.revokeAllUserTokens(request.getUserId());
+        }
+
         return ResponseEntity.ok(ApiResult.success(null));
     }
 
@@ -120,6 +128,20 @@ public class UserController extends BaseController {
         request.setLoginId(loginId);
         request.setUpdatedBy(loginId);
         request.setNewPassword(authService.getPasswordEncode(request.getNewPassword()));
+        userService.updatePassword(request);
+        return ResponseEntity.ok(ApiResult.success(null));
+    }
+
+    @PostMapping("/password/init")
+    @Operation(summary = "비밀번호 초기화", description = "사용자의 비밀번호를 초기화합니다.")
+    public ResponseEntity<ApiResult<Void>> updateInitPassword(
+            @RequestBody UserPasswordUpdateRequest request
+    ) {
+        UserDto user = userService.getUserInfoByUserId(request.getUserId());
+        request.setLoginId(user.getLoginId());
+        request.setNewPassword(authService.getPasswordEncode(user.getLoginId() + "!@"));
+        request.setUpdatedBy(getLoginId());
+        request.setIsFirstLogin(true);
         userService.updatePassword(request);
         return ResponseEntity.ok(ApiResult.success(null));
     }

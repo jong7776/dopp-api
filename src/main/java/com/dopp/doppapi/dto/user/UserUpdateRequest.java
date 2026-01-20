@@ -12,7 +12,7 @@ public class UserUpdateRequest {
     @Schema(description = "닉네임", example = "홍길동")
     private String nickname;
     
-    @Schema(description = "권한", example = "staff")
+    @Schema(description = "권한", example = "user")
     private String role;
     
     @Schema(description = "활성 여부", example = "true")

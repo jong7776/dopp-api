@@ -10,6 +10,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     UserDto selectUserInfoByLoginId(@Param("loginId") String loginId);
+    UserDto selectUserInfoByUserId(@Param("userId") Long userId);
 
     List<UserDto> selectUserList(UserDto request);
 
