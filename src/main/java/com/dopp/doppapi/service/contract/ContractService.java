@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,7 +54,6 @@ public class ContractService {
         List<ContractDto> list = ExcelUtil.uploadExcelByColumnOrder(file, ContractDto.class, headerMap);
 
         if (!list.isEmpty()) {
-            list.forEach(this::convertPurchaseAmountToNegative);
             contractMapper.insertContractList(list, loginId);
         }
     }
@@ -64,14 +62,12 @@ public class ContractService {
     public void createContract(ContractDto contractDto, String loginId) {
         contractDto.setCreatedBy(loginId);
         contractDto.setUpdatedBy(loginId);
-        convertPurchaseAmountToNegative(contractDto);
         contractMapper.insertContract(contractDto);
     }
 
     @Transactional
     public void updateContract(ContractDto contractDto, String loginId) {
         contractDto.setUpdatedBy(loginId);
-        convertPurchaseAmountToNegative(contractDto);
         contractMapper.updateContract(contractDto);
     }
 
@@ -87,22 +83,4 @@ public class ContractService {
         contractMapper.deleteContractByYear(request);
     }
 
-    private void convertPurchaseAmountToNegative(ContractDto dto) {
-        if ("P".equals(dto.getType())) {
-            Function<Long, Long> toNegative = val -> (val != null && val > 0) ? Long.valueOf(-val) : val;
-
-            dto.setM01(toNegative.apply(dto.getM01()));
-            dto.setM02(toNegative.apply(dto.getM02()));
-            dto.setM03(toNegative.apply(dto.getM03()));
-            dto.setM04(toNegative.apply(dto.getM04()));
-            dto.setM05(toNegative.apply(dto.getM05()));
-            dto.setM06(toNegative.apply(dto.getM06()));
-            dto.setM07(toNegative.apply(dto.getM07()));
-            dto.setM08(toNegative.apply(dto.getM08()));
-            dto.setM09(toNegative.apply(dto.getM09()));
-            dto.setM10(toNegative.apply(dto.getM10()));
-            dto.setM11(toNegative.apply(dto.getM11()));
-            dto.setM12(toNegative.apply(dto.getM12()));
-        }
-    }
 }
